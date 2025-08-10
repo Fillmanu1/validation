@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>มจท.16 - คำร้องขอโอนย้ายสาขาวิชาต่างคณะ</title>
+  <style>
+    body {
+  background-image: url('https://green.mju.ac.th/wp-content/uploads/2020/03/5D4_4445.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1e3a8a;
+    }
+    .field {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    .group {
+      display: flex;
+      gap: 20px;
+    }
+    .group .field {
+      flex: 1;
+    }
+    .error {
+      color: #dc2626;
+      font-size: 0.9em;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>คำร้องขอโอนย้ายสาขาวิชาต่างคณะ (มจท.16)</h1>
+    <form id="transferForm">
+      <div class="group">
+        <div class="field">
+          <label for="date">วันที่</label>
+          <input type="date" id="date" required>
+        </div>
+        <div class="field">
+          <label for="facultyNew">เรียน คณบดีคณะ (ใหม่)</label>
+          <input type="text" id="facultyNew" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fullName">ชื่อ-นามสกุล</label>
+        <input type="text" id="fullName" required>
+      </div>
+
+      <div class="group">
+        <div class="field">
+          <label for="studentId">รหัสนักศึกษา (10 หลัก)</label>
+          <input type="text" id="studentId" maxlength="10" required>
+          <div class="error" id="studentIdError"></div>
+        </div>
+        <div class="field">
+          <label for="phone">โทรศัพท์มือถือ</label>
+          <input type="tel" id="phone" required>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="field">
+          <label for="programType">หลักสูตร</label>
+          <select id="programType" required>
+            <option value="">-- เลือก --</option>
+            <option value="4">4 ปี</option>
+            <option value="2">4 ปีเทียบเข้าเรียน (2 ปี)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="studySystem">ระบบ</label>
+          <select id="studySystem" required>
+            <option value="">-- เลือก --</option>
+            <option value="ปกติ">ภาคปกติ</option>
+            <option value="สมทบ">ภาคสมทบ</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="field">
+          <label for="majorOld">สาขาวิชาเดิม</label>
+          <input type="text" id="majorOld" required>
+        </div>
+        <div class="field">
+          <label for="facultyOld">คณะเดิม</label>
+          <input type="text" id="facultyOld" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="majorNew">สาขาวิชาที่ต้องการโอนย้าย</label>
+        <input type="text" id="majorNew" required>
+      </div>
+
+      <div class="field">
+        <label for="reason">เหตุผลในการโอนย้าย</label>
+        <textarea id="reason" rows="3" required></textarea>
+      </div>
+
+      <div class="group">
+        <div class="field">
+          <label for="gpa">เกรดเฉลี่ยสะสม</label>
+          <input type="number" id="gpa" step="0.01" required>
+          <div class="error" id="gpaError"></div>
+        </div>
+        <div class="field">
+          <label for="credits">จำนวนหน่วยกิตสะสม</label>
+          <input type="number" id="credits" required>
+          <div class="error" id="creditsError"></div>
+        </div>
+      </div>
+
+      <button type="submit">ส่งคำร้อง</button>
+      <hr>
+<h2>ความเห็นจากฝ่ายที่เกี่ยวข้อง</h2>
+
+<div class="field">
+  <label for="advisorComment">(1) ความเห็นอาจารย์ที่ปรึกษา</label>
+  <textarea id="advisorComment" rows="3" required></textarea>
+</div>
+
+<div class="group">
+  <div class="field">
+    <label for="advisorName">ชื่ออาจารย์ที่ปรึกษา</label>
+    <input type="text" id="advisorName" required>
+  </div>
+  <div class="field">
+    <label for="advisorDate">วันที่</label>
+    <input type="date" id="advisorDate" required>
+  </div>
+</div>
+
+<div class="field">
+  <label for="curriculumChairComment">(2) ความเห็นประธานกรรมการบริหารหลักสูตร (สาขาเดิม)</label>
+  <textarea id="curriculumChairComment" rows="3" required></textarea>
+</div>
+
+<div class="group">
+  <div class="field">
+    <label for="curriculumChairName">ชื่อประธานกรรมการหลักสูตร</label>
+    <input type="text" id="curriculumChairName" required>
+  </div>
+  <div class="field">
+    <label for="curriculumChairDate">วันที่</label>
+    <input type="date" id="curriculumChairDate" required>
+  </div>
+</div>
+
+<div class="field">
+  <label for="deanOldComment">(3) ความเห็นคณบดีคณะเดิม</label>
+  <textarea id="deanOldComment" rows="3" required></textarea>
+</div>
+
+<div class="group">
+  <div class="field">
+    <label for="deanOldName">ชื่อคณบดีคณะเดิม</label>
+    <input type="text" id="deanOldName" required>
+  </div>
+  <div class="field">
+    <label for="deanOldDate">วันที่</label>
+    <input type="date" id="deanOldDate" required>
+  </div>
+</div>
+<div class="field">
+  <label for="curriculumNewComment">(4) ความเห็นประธานกรรมการบริหารหลักสูตร (สาขาใหม่)</label>
+  <textarea id="curriculumNewComment" rows="3" required></textarea>
+</div>
+
+<div class="group">
+  <div class="field">
+    <label for="curriculumNewName">ชื่อประธานกรรมการหลักสูตร</label>
+    <input type="text" id="curriculumNewName" required>
+  </div>
+  <div class="field">
+    <label for="curriculumNewDate">วันที่</label>
+    <input type="date" id="curriculumNewDate" required>
+  </div>
+</div>
+<hr>
+<h3>ความเห็นจากสาขาวิชาที่จะรับโอนย้าย</h3>
+
+
+
+<div class="field">
+  <label for="deanNewComment">(5) ความเห็นคณบดีคณะใหม่</label>
+  <textarea id="deanNewComment" rows="3" required></textarea>
+</div>
+
+<div class="group">
+  <div class="field">
+    <label for="deanNewName">ชื่อคณบดีคณะใหม่</label>
+    <input type="text" id="deanNewName" required>
+  </div>
+  <div class="field">
+    <label for="deanNewDate">วันที่</label>
+    <input type="date" id="deanNewDate" required>
+  </div>
+</div>
+<div class="field">
+  <label for="deanNewApproval">(6) ความเห็นคณบดีคณะใหม่</label>
+  <select id="deanNewApproval" required>
+    <option value="">-- เลือก --</option>
+    <option value="อนุมัติ">อนุมัติ</option>
+    <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+  </select>
+</div>
+<div class="group">
+  <div class="field">
+    <label for="deanNewNameFinal">ชื่อคณบดีคณะใหม่</label>
+    <input type="text" id="deanNewNameFinal">
+  </div>
+  <div class="field">
+    <label for="deanNewDateFinal">วันที่</label>
+    <input type="date" id="deanNewDateFinal">
+  </div>
+</div>
+
+<!-- (7) งานเงินรายได้ กองคลัง -->
+<div class="field">
+  <label for="paymentConfirmed">(7) ยืนยันการชำระเงิน 500 บาท</label>
+  <select id="paymentConfirmed" required>
+    <option value="">-- เลือก --</option>
+    <option value="ชำระแล้ว">ชำระแล้ว</option>
+    <option value="ยังไม่ชำระ">ยังไม่ชำระ</option>
+  </select>
+</div>
+<div class="group">
+  <div class="field">
+    <label for="receiptBook">ใบเสร็จรับเงินเล่มที่</label>
+    <input type="text" id="receiptBook">
+  </div>
+  <div class="field">
+    <label for="receiptNumber">เลขที่ใบเสร็จ</label>
+    <input type="text" id="receiptNumber">
+  </div>
+</div>
+<div class="field">
+  <label for="financeOfficer">ชื่อผู้รับเงิน</label>
+  <input type="text" id="financeOfficer">
+</div>
+<div class="field">
+  <label for="financeDate">วันที่ชำระเงิน</label>
+  <input type="date" id="financeDate">
+</div>
+
+<!-- (8) ความเห็นผู้อำนวยการสำนักบริหารและพัฒนาวิชาการ -->
+<div class="field">
+  <label for="academicDirectorComment">(8) ความเห็นผู้อำนวยการสำนักบริหารและพัฒนาวิชาการ</label>
+  <textarea id="academicDirectorComment" rows="3"></textarea>
+</div>
+<div class="group">
+  <div class="field">
+    <label for="academicDirectorName">ชื่อผู้อำนวยการ</label>
+    <input type="text" id="academicDirectorName">
+  </div>
+  <div class="field">
+    <label for="academicDirectorDate">วันที่</label>
+    <input type="date" id="academicDirectorDate">
+  </div>
+</div>
+
+<!-- (9) ความเห็นหัวหน้ากลุ่มภารกิจทะเบียนเรียนฯ -->
+<div class="field">
+  <label for="registrarComment">(9) ความเห็นหัวหน้ากลุ่มภารกิจทะเบียนเรียนฯ</label>
+  <textarea id="registrarComment" rows="3"></textarea>
+</div>
+<div class="group">
+  <div class="field">
+    <label for="registrarName">ชื่อหัวหน้ากลุ่มภารกิจ</label>
+    <input type="text" id="registrarName">
+  </div>
+  <div class="field">
+    <label for="registrarDate">วันที่</label>
+    <input type="date" id="registrarDate">
+  </div>
+</div>
+
+<!-- (10) สำหรับเจ้าหน้าที่ดำเนินการ -->
+<div class="field">
+  <label for="newStudentId">(10) รหัสนักศึกษาใหม่</label>
+  <input type="text" id="newStudentId">
+</div>
+<div class="field">
+  <label for="academicOfficerName">ชื่อเจ้าหน้าที่ผู้ดำเนินการ</label>
+  <input type="text" id="academicOfficerName">
+</div>
+<div class="field">
+  <label for="academicOfficerDate">วันที่ดำเนินการ</label>
+  <input type="date" id="academicOfficerDate">
+</div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h2>✅ ส่งคำร้องเรียบร้อย</h2>
+      <p>ระบบตรวจสอบคุณสมบัติผ่านแล้ว</p>
+      <button onclick="closeModal()">ปิด</button>
+    </div>
+  </div>
+<hr>
+<fieldset style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; background-color: #fefce8;">
+  <legend style="font-weight: bold; color: #b45309;">หมายเหตุ</legend>
+  <ul style="line-height: 1.6;">
+    <li>การโอนย้ายสาขาวิชาทั้งภายในคณะ และต่างคณะ จะกระทำได้เพียงครั้งเดียว</li>
+    <li>คำร้องที่ได้รับอนุมัติแล้ว ต้องยื่นที่กลุ่มภารกิจทะเบียนเรียนประมวลผล และรับเข้า สำนักบริหารและพัฒนาวิชาการ ก่อนเปิดภาคเรียนปกติไม่น้อยกว่า 4 สัปดาห์</li>
+    <li>นักศึกษาที่โอนย้ายสาขาวิชาต่างคณะ ต้องมีระยะเวลาศึกษาในสาขาใหม่ก่อนจบการศึกษา ดังนี้:
+      <ul>
+        <li>หลักสูตร 4 ปีเทียบเข้าเรียน (2 ปี): ต้องศึกษาในสาขาใหม่ไม่น้อยกว่า 2 ภาคการศึกษาปกติ</li>
+        <li>หลักสูตร 4 ปี: ต้องศึกษาในสาขาใหม่ไม่น้อยกว่า 4 ภาคการศึกษาปกติ</li>
+      </ul>
+    </li>
+  </ul>
+</fieldset>
+
+  <script>
+    const form = document.getElementById('transferForm');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+
+    function closeModal() {
+      modalBackdrop.classList.remove('show');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+      let valid = true;
+
+      const programType = document.getElementById('programType').value;
+      const gpa = parseFloat(document.getElementById('gpa').value);
+      const credits = parseInt(document.getElementById('credits').value);
+
+      if (programType === '2') {
+        if (credits < 18 || gpa < 2.00) {
+          valid = false;
+          document.getElementById('creditsError').textContent = 'ต้องมีหน่วยกิต ≥ 18';
+          document.getElementById('gpaError').textContent = 'ต้องมีเกรดเฉลี่ย ≥ 2.00';
+        }
+      } else if (programType === '4') {
+        if (credits < 30 || gpa < 2.00) {
+          valid = false;
+          document.getElementById('creditsError').textContent = 'ต้องมีหน่วยกิต ≥ 30';
+          document.getElementById('gpaError').textContent = 'ต้องมีเกรดเฉลี่ย ≥ 2.00';
+        }
+      } else {
+        valid = false;
+        document.getElementById('programTypeError').textContent = 'กรุณาเลือกหลักสูตร';
+      }
+
+      const studentId = document.getElementById('studentId').value;
+      if (!/^\d{10}$/.test(studentId)) {
+        valid = false;
+        document.getElementById('studentIdError').textContent = 'รหัสนักศึกษาต้องมี 10 หลัก';
+      }
+
+      if (valid) {
+        modalBackdrop.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
